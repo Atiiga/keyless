@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+    KeyLess
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>    
+<div padding>
+
+    <ion-grid>
+        <ion-col>
+           <ion-row>
+              <div>
+                  <button ion-button icon-start color="light" large round  (click)="openData()">
+                      <ion-icon name="unlock"></ion-icon>
+                    OPEN
+                  </button>
+                </div>
+            </ion-row>
+
+              <hr/>
+              <hr/>
+ 
+            <ion-row>
+              <div >
+                  <button ion-button icon-start color="light"  large round (click)="closeData()">
+                      <ion-icon name="lock"></ion-icon>
+                    CLOSE
+                  </button>
+                </div>
+            </ion-row>
+
+            <hr/>
+            <hr/>
+
+
+             <ion-row>
+                <div>
+                  <button ion-button icon-start color="light" large round (click)="bootData()">
+                    BOOT
+                  </button>
+                </div>
+              </ion-row>
+
+         
+      </ion-col>     
+     </ion-grid>
+</div>
+</ion-content>

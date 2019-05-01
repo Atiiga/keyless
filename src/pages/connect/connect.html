@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+      Connect
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <button ion-button full class="submit-button" (click)="listPairedDevices()">
+        <ion-icon name="refresh"></ion-icon>&nbsp;Refresh</button>
+  <ion-row>
+    <ion-col>
+      <ion-list  [(ngModel)]="pairedDeviceID" *ngIf="listToggle">
+        <ion-item *ngFor="let i of pairedList;let j=index">
+          <ion-label>{{i.name}}</ion-label>
+          <button ion-button clear item-end  (click)="selectDevice()"><ion-icon name="bluetooth"></ion-icon>&nbsp;Connect</button>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-content>

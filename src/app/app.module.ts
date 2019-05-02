@@ -43,14 +43,14 @@ firebase.initializeApp(config);
     MyApp,
     HomePage,
     TrackPage,
-    LoginPage,
+    //LoginPage,
     RegisterPage,
     ConnectPage,
     TabsPage 
   ],
   imports: [
     BrowserModule,
-    //LoginPageModule,
+    LoginPageModule,
     //RegisterPageModule,
     HttpModule,
     IonicModule.forRoot(MyApp),

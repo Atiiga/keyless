@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, Nav } from 'ionic-angular';
+import { Platform, Nav, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import * as firebase from 'firebase' 
@@ -15,24 +15,31 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = LoginPage;
-
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
-    
+ 
+  constructor(public platform: Platform, 
+    public statusBar: StatusBar, 
+    public loadingCtrl: LoadingController, 
+    public splashScreen: SplashScreen) {
+      var loader = this.loadingCtrl.create({
+        content: "Please wait..."
+      });
+      loader.present();
     this.initializeApp();
+    firebase.auth().onAuthStateChanged((user) => {
 
-  var that = this;
+      if (user) {
+        // User is signed in.
+        this.rootPage = TabsPage;
 
-var user = firebase.auth().currentUser;
+      } else {
+        // No user is signed in.
+        this.rootPage = LoginPage;
 
-if (user) {
-  // User is signed in.
-  this.rootPage = TabsPage;
-} else {
-  // No user is signed in.
-  this.rootPage = LoginPage;
-}
+      }
+      loader.dismiss();
 
-
+    });
+ 
   }
 
   initializeApp() {

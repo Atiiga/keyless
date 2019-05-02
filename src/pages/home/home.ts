@@ -85,7 +85,7 @@ export class HomePage {
       }
 
       SignOut(user){
-        this.fireAuth.auth.signOut()
+        this.fireAuth.auth.signOut();
       }
 
 

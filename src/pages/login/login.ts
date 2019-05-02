@@ -41,7 +41,7 @@ export class LoginPage {
         loader.present();
     
     
-        this.usersService.loginUserService(this.account.email, this.account.password).then(authData => {
+        this.usersService.loginUserService(this.email, this.password).then(authData => {
           //successful
           loader.dismiss();
           that.navCtrl.setRoot(TabsPage);

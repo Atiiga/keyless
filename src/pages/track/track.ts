@@ -48,8 +48,8 @@ ionViewDidLoad() {
 
             const GpsDataRef: firebase.database.Reference = firebase.database().ref(`/gps_devices/${this.deviceId}`);
             GpsDataRef.on(`value`, gps_devicesSnapshot =>{
-              this.GpsLat = gps_devicesSnapshot.val().lat;
-              this.GpsLng = gps_devicesSnapshot.val().lng;
+              this.GpsLat = gps_devicesSnapshot.val().Latitute;
+              this.GpsLng = gps_devicesSnapshot.val().Longitute;
               console.log('test, "String"')
               console.log('Location Coordinate lat',this.GpsLat);
               console.log('Location Coordinate lng',this.GpsLng);
@@ -58,7 +58,7 @@ ionViewDidLoad() {
               //console.log('lat', LatLng)
               //console.log('lat', LatLng)
 
-              let location = new google.maps.LatLng(this.GpsLat,-0.187667);
+              let location = new google.maps.LatLng(this.GpsLat,this.GpsLng);
 
               let options= {
                 center:location,

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AlertController, ToastController } from 'ionic-angular';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
+import {AngularFireAuth } from "angularfire2/auth"
 
 
 @Component({
@@ -11,7 +12,8 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 export class HomePage {
 
   constructor(public navCtrl: NavController,
-              private alertCtrl: AlertController, 
+              private alertCtrl: AlertController,
+              private fireAuth: AngularFireAuth, 
               private bluetoothSerial: BluetoothSerial, 
               private toastCtrl: ToastController) {
 
@@ -81,5 +83,10 @@ export class HomePage {
           toast.present();
       
       }
+
+      SignOut(user){
+        this.fireAuth.auth.signOut()
+      }
+
 
 }

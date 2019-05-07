@@ -8,6 +8,7 @@ import { GoogleMap, Environment, GoogleMaps } from '@ionic-native/google-maps';
 import { Device_loc} from '../../app/models/gpsloc';
 import { auth } from 'firebase';
 import firebase from 'firebase';
+import { PreviousTracksPage } from '../previous-tracks/previous-tracks';
 
 
 declare var google: any;
@@ -33,18 +34,24 @@ export class TrackPage {
       public navCtrl: NavController, 
       public navParams: NavParams) {
   }
+//ionViewWillEnter	will make the page reload if you 
+//leave page and come back again
 
-ionViewDidLoad() {
+ionViewWillEnter() {
   this.plt.ready().then(()=>{
       this.DisplayMap();
   });
     }
 
     DisplayMap() {
+
+      //this make the user load that app is loading the map
       var loader = this.loadingCtrl.create({
-        content: "Please wait..."
+        content: "Please wait...",
+        duration: 15000,
       });
-      loader.present();
+      loader.present();//start loader
+   
          //gets id of current user
          this.afAuth.authState.subscribe((auth)=>{
           this.currentUserId =auth.uid;
@@ -64,30 +71,38 @@ ionViewDidLoad() {
               console.log('Location Coordinate lng',this.GpsLng);
             
 
+              //map location variable
+              const location = new google.maps.LatLng(this.GpsLat,this.GpsLng);
 
-              let location = new google.maps.LatLng(this.GpsLat,this.GpsLng);
-
+              //map options object
               let options= {
                 center:location,
                 zoom:10,
-                streetViewControl:false,
-                mapTypeId: 'hybrid'
+                //streetViewControl:false,
+                mapTypeId: 'roadmap'
               };
               //load the map
               let map =new google.maps.Map(this.mapRef.nativeElement,options);
               //point current location
               this.addMarker (location,map);
 
-              loader.dismiss();              
+              loader.dismiss(); // dismiss loader after the map is done loading                
+
             })        
           })
         }); 
 
     }
+
+    ///Location marker function
     addMarker(position,map) {
       return new google.maps.Marker({
         position,
         map
       });
+    }
+
+    RecordedTrack(){
+      this.navCtrl.push(PreviousTracksPage);
     }
 }

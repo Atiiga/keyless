@@ -23,6 +23,8 @@ import { LoginPageModule } from '../pages/login/login.module';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { UsersserviceProvider } from '../providers/usersservice/usersservice';
 import { HttpModule } from '@angular/http';
+import { PreviousTracksPage } from '../pages/previous-tracks/previous-tracks';
+import { IonicStorageModule } from '@ionic/storage';
 
 
 // Initialize Firebase
@@ -46,7 +48,8 @@ firebase.initializeApp(config);
     //LoginPage,
     RegisterPage,
     ConnectPage,
-    TabsPage 
+    TabsPage,
+    PreviousTracksPage
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ firebase.initializeApp(config);
     //RegisterPageModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(config),
     AngularFireAuthModule,
     AngularFireDatabaseModule
@@ -66,7 +70,8 @@ firebase.initializeApp(config);
     ConnectPage,
     TabsPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    PreviousTracksPage
   ],
   providers: [
     StatusBar,

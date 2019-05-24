@@ -64,8 +64,8 @@ ionViewWillEnter() {
             //Read the Location Coordinate
             const GpsDataRef: firebase.database.Reference = firebase.database().ref(`/gps_devices/${this.deviceId}`);
             GpsDataRef.on(`value`, gps_devicesSnapshot =>{
-              this.GpsLat = gps_devicesSnapshot.val().Latitute;
-              this.GpsLng = gps_devicesSnapshot.val().Longitute;
+              this.GpsLat = gps_devicesSnapshot.val().Latitude;
+              this.GpsLng = gps_devicesSnapshot.val().Longitude;
               console.log('test, "String"')
               console.log('Location Coordinate lat',this.GpsLat);
               console.log('Location Coordinate lng',this.GpsLng);

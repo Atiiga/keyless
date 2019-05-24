@@ -1,8 +1,9 @@
 import * as functions from 'firebase-functions';
 
 
-let prLat =0.000000
-let prLng =0.000000
+let prLat =0.000000;
+let prLng =0.000000;
+let tCount =0;
 
 
 
@@ -13,11 +14,11 @@ export const addLocation =  functions.database
         console.log(prLng);
 
         const Pcoords = await Change.before.val();
-        const Plat =Pcoords.Latitute;
-        const Plng =Pcoords.Longitute;
+        const Plat =Pcoords.Latitude;
+        const Plng =Pcoords.Longitude;
         const Ncoords = await Change.after.val();
-        const Nlat =Ncoords.Latitute;
-        const Nlng =Ncoords.Longitute;
+        const Nlat =Ncoords.Latitude;
+        const Nlng =Ncoords.Longitude;
         console.log(Plat);
         console.log(Plng);
         console.log(Nlat);
@@ -30,6 +31,18 @@ export const addLocation =  functions.database
         console.log(Latdif);
         console.log(Lngdif);
         const timeUpdated = new Date().toLocaleString();
+        const date = new Date()
+        let day = date.getDate().toString();
+        let month = (date.getMonth()+1).toString();
+        let  year = date.getFullYear().toString();
+        let hours = date.getHours().toLocaleString();
+        let minutes = date.getMinutes().toLocaleString();
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        const dateFormat = year + '-'+ month +'-' + day
+        const timeFormat = hours + ':'+ minutes;
+        console.log(dateFormat);
         console.log(timeUpdated);
     
         //Calculating for the distance between two coordinates 
@@ -49,17 +62,14 @@ export const addLocation =  functions.database
         console.log(d);
 
         if (d >= 1000){
-            prLat = Nlat;
-            prLng = Nlng;
-            console.log(prLat);
-            console.log(prLng);
+            prLat = Nlat; //Replace the previous latitude
+            prLng = Nlng; // Replace the previous Longitude
+            tCount++; // increase the count
 
-          return   Change.after.ref.child(`track/${timeUpdated}`).set({
-          //return   Change.after.ref.child(`track/1223`).set({
-
+          return   Change.after.ref.child(`track/${dateFormat}/point`+`${tCount}`).set({
               Latitude:Nlat, 
               Longitude:Nlng,
-              Time:timeUpdated});
+              Time:timeFormat});
         }
         else{
             return null

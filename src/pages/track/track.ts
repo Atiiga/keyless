@@ -33,6 +33,8 @@ export class TrackPage {
   public GpsLatLng ;
   isViewRoute = false;
   Places = [];
+  markers = [];
+
   constructor( 
       public loadingCtrl: LoadingController, 
       private afAuth: AngularFireAuth,  
@@ -47,6 +49,7 @@ export class TrackPage {
 ionViewDidEnter() {
   this.plt.ready().then(()=>{
       this.DisplayMap();
+      //this.dropRoute();
   });
     }
 
@@ -107,6 +110,7 @@ RecordedTrack(){
         position,
         map
       });
+      
     }
 
    PlacesCoords(){
@@ -145,7 +149,8 @@ RecordedTrack(){
         });
       });
     });
-   
+  
+
     const Route = new google.maps.Polyline({
       path: this.Places,
       geodesic: true,
@@ -159,6 +164,78 @@ RecordedTrack(){
 
     return this.Places;   
   }
+   
+  dropRoute(){
+
+          //this make the user load that app is loading the map
+          let loader = this.loadingCtrl.create({
+            content: "Please wait...",
+            duration: 15000,
+               });
+          loader.present();//start loader
+    this.afAuth.authState.subscribe((auth)=>{
+      this.currentUserId =auth.uid;
+      //get Device id
+      const deviceidRef: firebase.database.Reference = firebase.database().ref(`/devices/${this.currentUserId}`);
+      deviceidRef.on(`value`, devicesSnapShot =>{
+      this.deviceId = devicesSnapShot.val().device_id;
+
+      //get date
+      const date = new Date()
+      let day = date.getDate().toString();
+      let month = (date.getMonth()+1).toString();
+      let  year = date.getFullYear().toString();
+      let hours = date.getHours().toLocaleString();
+      let minutes = date.getMinutes().toLocaleString();
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+      let dateFormat = year + '-'+ month +'-' + day
+        console.log(dateFormat);
+        //reference to places coords
+      const GpsDataRef: firebase.database.Reference = firebase.database().ref(`/gps_devices/${this.deviceId}/track/${dateFormat}`);
+        GpsDataRef.on(`value`,DataSnapshot=>{
+          this.Places = [];
+          DataSnapshot.forEach(snap=>{
+            this.Places.push({lat: parseFloat(snap.val().Latitude), lng: parseFloat(snap.val().Longitude)});
+          });
+          console.log(this.Places);
+        });
+      });
+    });
+
+     this.clearMarkers();
+    for (let i = 0; i < this.Places.length; i++) {
+      this.addMarkerWithTimeout(this.Places[i], i * 200);
+    }
+    const Route = new google.maps.Polyline({
+      path: this.Places,
+      geodesic: true,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 9
+    });
+
+     Route.setMap(this.map);
+    loader.dismiss();//start loader
+  }
+
+   addMarkerWithTimeout(position, timeout) {
+    window.setTimeout(()=> {
+      this.markers.push(new google.maps.Marker({
+        position: position,
+        map: this.map,
+        animation: google.maps.Animation.DROP
+      }));
+    }, timeout);
+  }
+
+   clearMarkers() {
+    for (var i = 0; i < this.markers.length; i++) {
+      this.markers[i].setMap(null);
+    }
+   this. markers = [];
+  }
+
 
 }
 
